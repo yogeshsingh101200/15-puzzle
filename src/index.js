@@ -2,24 +2,115 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+function findBlank(squares) {
+    for (let i = 0; i < squares.length; ++i) {
+        if (!squares[i]) return i;
+    }
+}
+
+function isSolvable(squares) {
+    let inversions = 0;
+    let blank = findBlank(squares);
+    let row = (blank - blank % 4) / 4;
+    for (let i = 0; i < squares.length - 1; ++i) {
+        for (let j = i + 1; j < squares.length; ++j) {
+            // j > i
+            if (squares[i] && squares[j] && squares[i] > squares[j]) ++inversions;
+        }
+    }
+    console.log(inversions);
+    // Since grid width is even
+    if ((row & inversions) & 1 === 0) return true; // checks for opposite polarity
+    return false;
+}
+
+function shuffle(squares) {
+    for (let i = 0; i < squares.length; ++i) {
+        let r = Math.floor(Math.random() * (i + 1));
+        [squares[i], squares[r]] = [squares[r], squares[i]];
+    }
+    return squares;
+}
+
+function setupBoard() {
+    let squares = Array(16).fill(0);
+    squares.forEach((val, idx) => {
+        squares[idx] = idx ? idx : null;
+    });
+    shuffle(squares);
+    if (!isSolvable(squares)) {
+        if (squares[0] && squares[1]) {
+            [squares[0], squares[1]] = [squares[1], squares[0]];
+        } else {
+            [squares[2], squares[3]] = [squares[3], squares[2]];
+        }
+    }
+    return squares;
+}
+
+function calculateWinner(squares) {
+    for (let i = 0; i < squares.length; ++i) {
+        if (squares[i] && squares[i] !== (i + 1)) return false;
+    }
+    return true;
+}
+
 class Square extends React.Component {
     render() {
         return (
-            <button className="square">
-                {/* TODO */}
+            <button
+                className="square"
+                onClick={this.props.onClick}
+            >
+                {this.props.value}
             </button>
         );
     }
 }
 
 class Board extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            squares: setupBoard()
+        };
+    }
+
+    handleClick(i) {
+        if (calculateWinner(this.state.squares)) return;
+        const squares = this.state.squares.slice();
+        let blank = findBlank(squares);
+        if (blank === i) return;
+        let places = [-1, 1, -4, 4];
+        if (places.includes(Math.abs(blank - i))) {
+
+            [squares[i], squares[blank]] = [squares[blank], squares[i]];
+
+            this.setState({
+                squares: squares
+            });
+        }
+    }
+
     renderSquare(i) {
-        return <Square />;
+        return (
+            <Square
+                value={this.state.squares[i]}
+                onClick={() => { this.handleClick(i); }}
+            />);
     }
 
     render() {
+
+        let status = "Game on";
+        if (calculateWinner(this.state.squares)) {
+            status = 'You Won!!';
+        }
+
         return (
             <div>
+                <div className="status">{status}</div>
                 <div className="board-row">
                     {this.renderSquare(0)}
                     {this.renderSquare(1)}
