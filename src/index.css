@@ -1,6 +1,7 @@
 body {
     font: 14px "Century Gothic", Futura, sans-serif;
     padding: 0;
+    margin: 0;
     height: 100vh;
     width: 100vw;
     overflow: hidden;
@@ -9,6 +10,7 @@ body {
 #root {
     height: 100%;
     width: 100%;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,16 +52,37 @@ ol, ul {
 }
 
 .game {
+    width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
 }
 
-.game-info {
-    margin-left: 20px;
+.info, .status {
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
 .status {
     text-align: center;
-    font-size: 1.5rem;
-    font-weight: 500;
+    width: 100%;
+}
+
+.info {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.timer {
+    justify-self: start;
+}
+
+.moves {
+    justify-self: end;
+}
+
+.option {
+    margin-top: 1rem;
 }

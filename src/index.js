@@ -55,6 +55,35 @@ function calculateWinner(squares) {
     return true;
 }
 
+class Timer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            counter: 0
+        };
+    }
+
+    componentDidMount() {
+        console.log("mounted");
+        this.timerId = setInterval(() => {
+            this.setState(state => ({
+                counter: state.counter + 1
+            }));
+        }, 1000);
+    }
+
+    componentWillUnmount() {
+        console.log("unmounted");
+        clearInterval(this.timerId);
+    }
+
+    render() {
+        return (
+            <div>Timer: {this.state.counter}s</div>
+        );
+    }
+}
+
 class Square extends React.Component {
     render() {
         return (
@@ -73,7 +102,8 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            squares: setupBoard()
+            squares: setupBoard(),
+            moves: 0
         };
     }
 
@@ -87,11 +117,21 @@ class Board extends React.Component {
 
             [squares[i], squares[blank]] = [squares[blank], squares[i]];
 
-            this.setState({
-                squares: squares
-            });
+            this.setState(state => ({
+                squares: squares,
+                moves: state.moves + 1
+            }));
         }
     }
+
+
+    reset() {
+        this.setState({
+            squares: setupBoard(),
+            moves: 0
+        });
+    }
+
 
     renderSquare(i) {
         return (
@@ -102,15 +142,24 @@ class Board extends React.Component {
     }
 
     render() {
-
         let status = "Game on";
         if (calculateWinner(this.state.squares)) {
-            status = 'You Won!!';
+            status = 'You Won';
+        }
+        let timer;
+        if (this.state.moves > 0) {
+            timer = <Timer />;
+        } else {
+            timer = <div>Timer: paused</div>;
         }
 
         return (
             <div>
                 <div className="status">{status}</div>
+                <div className="info">
+                    <div className="timer">{timer}</div>
+                    <div className="moves">Moves: {this.state.moves}</div>
+                </div>
                 <div className="board-row">
                     {this.renderSquare(0)}
                     {this.renderSquare(1)}
@@ -135,6 +184,9 @@ class Board extends React.Component {
                     {this.renderSquare(14)}
                     {this.renderSquare(15)}
                 </div>
+                <div className="option">
+                    <button onClick={() => { this.reset(); }}>Restart</button>
+                </div>
             </div>
         );
     }
@@ -146,10 +198,6 @@ class Game extends React.Component {
             <div className="game">
                 <div className="game-board">
                     <Board />
-                </div>
-                <div className="game-info">
-                    <div>{/* status */}</div>
-                    <ol>{/* TODO */}</ol>
                 </div>
             </div>
         );
