@@ -56,6 +56,8 @@ function calculateWinner(squares) {
     return true;
 }
 
+let globalTimer = 0;
+
 class Timer extends React.Component {
     constructor(props) {
         super(props);
@@ -70,6 +72,7 @@ class Timer extends React.Component {
             this.setState(state => ({
                 counter: state.counter + 1
             }));
+            globalTimer = this.state.counter;
         }, 1000);
     }
 
@@ -143,15 +146,17 @@ class Board extends React.Component {
     }
 
     render() {
+        let timer;
         let status = <div className="status">Game on</div>;
         if (calculateWinner(this.state.squares)) {
             status = <div className="status win">You Won</div>;
-        }
-        let timer;
-        if (this.state.moves > 0) {
-            timer = <Timer />;
+            timer = <div>Timer: {globalTimer}s</div>;
         } else {
-            timer = <div>Timer: paused</div>;
+            if (this.state.moves > 0) {
+                timer = <Timer />;
+            } else {
+                timer = <div>Timer: paused</div>;
+            }
         }
 
         return (
