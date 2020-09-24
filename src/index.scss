@@ -28,39 +28,15 @@ body {
 
 .square {
     float: left;
-    font-size: 3rem;
+    font-size: 1.5rem;
     font-family: cursive;
     font-weight: bold;
-    line-height: 5rem;
-    height: 5rem;
+    line-height: 4rem;
+    height: 4rem;
     padding: 0;
     text-align: center;
-    width: 5rem;
+    width: 4rem;
     margin: 0.25rem;
-}
-
-@media (max-width: 768px) {
-
-    .square {
-        float: left;
-        font-size: 1.5rem;
-        font-family: cursive;
-        font-weight: bold;
-        line-height: 4rem;
-        height: 4rem;
-        padding: 0;
-        text-align: center;
-        width: 4rem;
-        margin: 0.25rem;
-    }
-}
-
-.square:focus {
-    outline: none;
-}
-
-.kbd-navigation .square:focus {
-    background: #ddd;
 }
 
 .game {
