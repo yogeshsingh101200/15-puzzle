@@ -19,7 +19,6 @@ function isSolvable(squares) {
             if (squares[i] && squares[j] && squares[i] > squares[j]) ++inversions;
         }
     }
-    console.log(inversions);
     // Since grid width is even
     if (((row ^ inversions) & 1) === 1) return true; // checks for opposite polarity
     return false;
@@ -56,46 +55,33 @@ function calculateWinner(squares) {
     return true;
 }
 
-let globalTimer = 0;
 
-class Timer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            counter: 0
-        };
-    }
-
-    componentDidMount() {
-        console.log("mounted");
-        this.timerId = setInterval(() => {
-            this.setState(state => ({
-                counter: state.counter + 1
-            }));
-            globalTimer = this.state.counter;
-        }, 1000);
-    }
-
-    componentWillUnmount() {
-        console.log("unmounted");
-        clearInterval(this.timerId);
-    }
-
-    render() {
+function Square(props) {
+    if (!props.value && !props.correct) {
         return (
-            <div>Timer: {this.state.counter}s</div>
+            <button
+                className="square btn btn-primary"
+                onClick={props.onClick}
+            >
+                {props.value}
+            </button>
         );
-    }
-}
-
-class Square extends React.Component {
-    render() {
+    } else if (props.correct) {
+        return (
+            <button
+                className="square btn btn-secondary"
+                onClick={props.onClick}
+            >
+                {props.value}
+            </button>
+        );
+    } else {
         return (
             <button
                 className="square btn btn-dark"
-                onClick={this.props.onClick}
+                onClick={props.onClick}
             >
-                {this.props.value}
+                {props.value}
             </button>
         );
     }
@@ -107,7 +93,8 @@ class Board extends React.Component {
         super(props);
         this.state = {
             squares: setupBoard(),
-            moves: 0
+            moves: 0,
+            seconds: 0
         };
     }
 
@@ -116,6 +103,15 @@ class Board extends React.Component {
         const squares = this.state.squares.slice();
         let blank = findBlank(squares);
         if (blank === i) return;
+
+        if (this.state.moves === 0) {
+            this.timerId = setInterval(() => {
+                this.setState(state => ({
+                    seconds: state.seconds + 1
+                }));
+            }, 1000);
+        }
+
         let places = [-1, 1, -4, 4];
         if (places.includes(Math.abs(blank - i))) {
 
@@ -132,39 +128,48 @@ class Board extends React.Component {
     reset() {
         this.setState({
             squares: setupBoard(),
-            moves: 0
+            moves: 0,
+            seconds: 0
         });
+        if (this.timerId) {
+            clearInterval(this.timerId);
+        }
     }
 
 
     renderSquare(i) {
-        return (
-            <Square
-                value={this.state.squares[i]}
-                onClick={() => { this.handleClick(i); }}
-            />);
+        if ((this.state.squares[i] === i + 1) || (!this.state.squares[i] && i === 15)) {
+            console.log("hello");
+            return (
+                <Square
+                    value={this.state.squares[i]}
+                    correct={true}
+                    onClick={() => { this.handleClick(i); }}
+                />);
+        } else {
+            return (
+                <Square
+                    value={this.state.squares[i]}
+                    correct={false}
+                    onClick={() => { this.handleClick(i); }}
+                />);
+        }
     }
 
     render() {
-        let timer;
         let status = <div className="status">Game on</div>;
+
         if (calculateWinner(this.state.squares)) {
             status = <div className="status win">You Won</div>;
-            timer = <div>Timer: {globalTimer}s</div>;
-        } else {
-            if (this.state.moves > 0) {
-                timer = <Timer />;
-            } else {
-                timer = <div>Timer: paused</div>;
-            }
+            clearInterval(this.timerId);
         }
 
         return (
             <div>
                 {status}
                 <div className="info">
-                    <div className="timer btn btn-dark">{timer}</div>
-                    <div className="moves btn btn-dark">Moves: {this.state.moves}</div>
+                    <div className="timer">Time: {this.state.seconds}s</div>
+                    <div className="moves">Moves: {this.state.moves}</div>
                 </div>
                 <div className="board-row">
                     {this.renderSquare(0)}
@@ -192,7 +197,7 @@ class Board extends React.Component {
                 </div>
                 <div className="option">
                     <button
-                        className="btn btn-dark btn-block"
+                        className="btn btn-danger btn-block"
                         onClick={() => { this.reset(); }}
                     >Restart</button>
                 </div>
@@ -201,16 +206,14 @@ class Board extends React.Component {
     }
 }
 
-class Game extends React.Component {
-    render() {
-        return (
-            <div className="game">
-                <div className="game-board">
-                    <Board />
-                </div>
+function Game() {
+    return (
+        <div className="game">
+            <div className="game-board">
+                <Board />
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 // ========================================
