@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+
+import './index.scss';
 
 function findBlank(squares) {
     for (let i = 0; i < squares.length; ++i) {
@@ -88,7 +89,7 @@ class Square extends React.Component {
     render() {
         return (
             <button
-                className="square"
+                className="square btn btn-dark"
                 onClick={this.props.onClick}
             >
                 {this.props.value}
@@ -142,9 +143,9 @@ class Board extends React.Component {
     }
 
     render() {
-        let status = "Game on";
+        let status = <div className="status">Game on</div>;
         if (calculateWinner(this.state.squares)) {
-            status = 'You Won';
+            status = <div className="status win">You Won</div>;
         }
         let timer;
         if (this.state.moves > 0) {
@@ -155,10 +156,10 @@ class Board extends React.Component {
 
         return (
             <div>
-                <div className="status">{status}</div>
+                {status}
                 <div className="info">
-                    <div className="timer">{timer}</div>
-                    <div className="moves">Moves: {this.state.moves}</div>
+                    <div className="timer btn btn-dark">{timer}</div>
+                    <div className="moves btn btn-dark">Moves: {this.state.moves}</div>
                 </div>
                 <div className="board-row">
                     {this.renderSquare(0)}
@@ -185,7 +186,10 @@ class Board extends React.Component {
                     {this.renderSquare(15)}
                 </div>
                 <div className="option">
-                    <button onClick={() => { this.reset(); }}>Restart</button>
+                    <button
+                        className="btn btn-dark btn-block"
+                        onClick={() => { this.reset(); }}
+                    >Restart</button>
                 </div>
             </div>
         );
