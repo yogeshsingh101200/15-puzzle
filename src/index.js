@@ -21,7 +21,7 @@ function isSolvable(squares) {
     }
     console.log(inversions);
     // Since grid width is even
-    if ((row & inversions) & 1 === 0) return true; // checks for opposite polarity
+    if (((row ^ inversions) & 1) === 1) return true; // checks for opposite polarity
     return false;
 }
 
