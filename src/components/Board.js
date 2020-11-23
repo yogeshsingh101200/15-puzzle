@@ -55,7 +55,6 @@ export class Board extends Component {
 
     renderSquare(i) {
         if ((this.state.squares[i] === i + 1) || (!this.state.squares[i] && i === 15)) {
-            console.log("hello");
             return (
                 <Square
                     value={this.state.squares[i]}
@@ -73,10 +72,10 @@ export class Board extends Component {
     }
 
     render() {
-        let status = <div className="status">Game on</div>;
+        let status = <div className="card bg-primary text-center p-3 status">Game on</div>;
 
         if (calculateWinner(this.state.squares)) {
-            status = <div className="status win">You Won</div>;
+            status = <div className="card bg-success text-center p-3 status">You Won</div>;
             clearInterval(this.timerId);
         }
 
@@ -84,8 +83,8 @@ export class Board extends Component {
             <div>
                 {status}
                 <div className="info">
-                    <div className="timer">Time: {this.state.seconds}s</div>
-                    <div className="moves">Moves: {this.state.moves}</div>
+                    <div className="timer card bg-warning p-3 text-center w-100 font-weight-bold">Time: {this.state.seconds}s</div>
+                    <div className="moves card bg-warning p-3 text-center w-100 font-weight-bold">Moves: {this.state.moves}</div>
                 </div>
                 <div className="board-row">
                     {this.renderSquare(0)}

@@ -4,7 +4,7 @@ export default function Square(props) {
     if (!props.value && !props.correct) {
         return (
             <button
-                className="square btn btn-primary"
+                className="square btn btn-secondary"
                 onClick={props.onClick}
             >
                 {props.value}
@@ -13,7 +13,7 @@ export default function Square(props) {
     } else if (props.correct) {
         return (
             <button
-                className="square btn btn-secondary"
+                className="square btn btn-success"
                 onClick={props.onClick}
             >
                 {props.value}
