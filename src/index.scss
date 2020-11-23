@@ -1,9 +1,5 @@
-@import "~bootswatch/dist/darkly/variables";
-@import "~bootstrap/scss/bootstrap";
-@import "~bootswatch/dist/darkly/bootswatch";
-
 body {
-    font: 14px "Century Gothic", Futura, sans-serif;
+    font: 16px 'Times New Roman', Times, serif;
     padding: 0;
     margin: 0;
     height: 100vh;
@@ -46,7 +42,6 @@ body {
 }
 
 .status {
-    font-family: 'Times New Roman', Times, serif;
     font-size: 1.5rem;
 }
 
@@ -68,7 +63,6 @@ body {
 
 .timer, .moves {
     font-size: 1.25rem;
-    font-family: 'Times New Roman', Times, serif;
 }
 
 .option {
@@ -76,21 +70,22 @@ body {
 }
 
 .win {
-    background-color: $success;
+    background-color: green;
+}
+
+.feedback {
+    font-size: 1rem;
 }
 
 .game-header {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 5rem;
-}
-@media (max-width: 480px) {
-    .game-header {
-        font-size: 4.5rem;
-    }
+    width: 18rem;
+    font-size: 2rem;
 }
 
-@media (max-width: 320px) {
-    .game-header {
-        font-size: 3.5rem;
-    }
+.instructions {
+    font-size: 1rem;
+}
+
+.instructions > span {
+    margin-left: 0.5rem;
 }

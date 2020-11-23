@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { findBlank, setupBoard, calculateWinner } from "../utilities";
 import Square from "./Square";
+import Success from "./Success";
 
 
 export class Board extends Component {
@@ -41,7 +42,7 @@ export class Board extends Component {
     }
 
 
-    reset() {
+    reset = () => {
         this.setState({
             squares: setupBoard(),
             moves: 0,
@@ -50,7 +51,7 @@ export class Board extends Component {
         if (this.timerId) {
             clearInterval(this.timerId);
         }
-    }
+    };
 
 
     renderSquare(i) {
@@ -72,16 +73,19 @@ export class Board extends Component {
     }
 
     render() {
-        let status = <div className="card bg-primary text-center p-3 status">Game on</div>;
-
+        let won = false;
         if (calculateWinner(this.state.squares)) {
-            status = <div className="card bg-success text-center p-3 status">You Won</div>;
+            won = true;
             clearInterval(this.timerId);
         }
 
         return (
             <div>
-                {status}
+                {won ? <Success
+                    reset={this.reset}
+                    moves={this.state.moves}
+                    time={this.state.seconds}
+                /> : null}
                 <div className="info">
                     <div className="timer card bg-warning p-3 text-center w-100 font-weight-bold">Time: {this.state.seconds}s</div>
                     <div className="moves card bg-warning p-3 text-center w-100 font-weight-bold">Moves: {this.state.moves}</div>
@@ -113,7 +117,8 @@ export class Board extends Component {
                 <div className="option">
                     <button
                         className="btn btn-danger btn-block"
-                        onClick={() => { this.reset(); }}
+                        onClick={this.reset}
+                        style={{ fontSize: "1.25rem" }}
                     >Restart</button>
                 </div>
             </div>

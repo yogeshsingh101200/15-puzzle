@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import './index.scss';
+import "bootswatch/dist/darkly/bootstrap.min.css";
+import "./index.scss";
 import Game from "./components/Game";
 
 ReactDOM.render(

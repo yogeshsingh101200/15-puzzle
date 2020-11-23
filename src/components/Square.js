@@ -4,7 +4,7 @@ export default function Square(props) {
     if (!props.value && !props.correct) {
         return (
             <button
-                className="square btn btn-secondary"
+                className="square btn btn-light"
                 onClick={props.onClick}
             >
                 {props.value}
