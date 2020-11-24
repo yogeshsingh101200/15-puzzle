@@ -8,9 +8,7 @@ export default function Header() {
     return (
         <>
             <div className="game-header card py-3 px-2 mb-2 rounded-lg text-center">
-                <div>
-                    15 Puzzle <FontAwesomeIcon className="instructions-toggler ml-2" icon={faInfoCircle} onClick={() => setShow(true)} />
-                </div>
+                15 Puzzle <FontAwesomeIcon className="instructions-toggler ml-2" icon={faInfoCircle} onClick={() => setShow(true)} />
             </div>
 
             <Modal
